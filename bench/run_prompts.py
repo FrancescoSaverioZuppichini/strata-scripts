@@ -9,15 +9,13 @@ def gen(r):
     body = {"model": "x", "messages": [{"role": "user", "content": r["prompt"]}], "max_tokens": r["max_tokens"],
             "temperature": 0, "chat_template_kwargs": {"enable_thinking": False}}
     req = urllib.request.Request(f"http://127.0.0.1:{port}/v1/chat/completions", json.dumps(body).encode(), {"Content-Type": "application/json"})
-    t = json.load(urllib.request.urlopen(req, timeout=900))["timings"]
-    return t["predicted_per_second"], t["predicted_n"]
+    return json.load(urllib.request.urlopen(req, timeout=900))["timings"]["predicted_per_second"]
 
 for r in rows:
     gen(r)
 by = {}
 for _ in range(runs):
     for r in rows:
-        tps, n = gen(r)
-        by.setdefault(r["cat"], []).append(tps)
+        by.setdefault(r["cat"], []).append(gen(r))
 allv = [v for vs in by.values() for v in vs]
 print("RESULT " + "  ".join(f"{c} {statistics.median(v):6.1f}" for c, v in by.items()) + f"  | all {statistics.median(allv):6.1f}")
