@@ -1,0 +1,48 @@
+// OpenCode for the strata server of ../../start.sh or ../../start-coder.sh. Copy to ~/.config/opencode/opencode.jsonc.
+// From another machine, tunnel first: ssh -N -L 8080:127.0.0.1:8080 <strata box>.
+// limit.input is what makes OpenCode compact a long conversation (strata connect's note); context minus output.
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "strata/qwen3.8-flash-next-coder",
+  "small_model": "strata/qwen3.8-flash-next-coder",
+  "autoupdate": false,
+  "share": "disabled",
+  "compaction": { "auto": true, "buffer": 13672 },
+  "provider": {
+    "strata": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Strata",
+      "options": { "baseURL": "http://127.0.0.1:8080/v1" },
+      "models": {
+        "qwen3.8-flash-next-coder": {
+          "name": "Qwen3.8 Flash-Next Coder (start-coder.sh, 512K)",
+          "reasoning": true,
+          "tool_call": true,
+          "attachment": true,
+          "interleaved": "reasoning_content",
+          "limit": { "context": 524288, "input": 507904, "output": 16384 },
+          "options": { "reasoningEffort": "medium" },
+          "variants": {
+            "low": { "reasoningEffort": "low" },
+            "medium": { "reasoningEffort": "medium" },
+            "high": { "reasoningEffort": "high" }
+          }
+        },
+        "qwen3.8-flash-next-iq2_xs": {
+          "name": "Qwen3.8 Flash-Next IQ2_XS (start.sh, 512K)",
+          "reasoning": true,
+          "tool_call": true,
+          "attachment": true,
+          "interleaved": "reasoning_content",
+          "limit": { "context": 524288, "input": 507904, "output": 16384 },
+          "options": { "reasoningEffort": "medium" },
+          "variants": {
+            "low": { "reasoningEffort": "low" },
+            "medium": { "reasoningEffort": "medium" },
+            "high": { "reasoningEffort": "high" }
+          }
+        }
+      }
+    }
+  }
+}
