@@ -27,15 +27,12 @@ weights alone. That needs `abliteration/Huihui-Qwen3.8-Flash-Next-refusal-direct
 ## Benchmark
 
 ```sh
-./bench.sh                  # the Coder
-MODEL=inkling ./bench.sh    # Inkling 2 Mini SQ-20 (needs strata 0.2.19+)
+./bench.sh
 ```
 
 It starts the plain Coder (int8 KV, 512K, one slot) and runs a fixed set of 10 prompts (code, prose, chat, a ~20K-token
 refactor), then strata's own suite (short chat, 4K-32K prompt reading, agent turns). It stops the server when it ends
-and writes everything to `results/<host>-<date>-<model>/`. `MODEL=inkling` runs the same prompts on Inkling 2 Mini
-SQ-20, the lossless pack for 24 GiB cards, at 48K with no picture reader: on a 3090 its weights take 18 GiB and 64K runs
-out of memory. The reference it prints, from the workstation (Ryzen 9 5950X,
+and writes everything to `results/<host>-<date>/`. The reference it prints, from the workstation (Ryzen 9 5950X,
 RTX 3090 at 300 W, 64 GB DDR4-3200, strata 0.2.16):
 
 | | tok/s |
