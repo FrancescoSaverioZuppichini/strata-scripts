@@ -6,7 +6,7 @@ OpenCode config to code with it. It needs strata installed with its official `in
 | File | What it is |
 |---|---|
 | `start-coder.sh` | The Coder (IQ1_M: half the experts, stored at 3.5 bits) at 512K context, int8 KV, MTP draft 3. The default for coding. |
-| `start.sh` | The general model (IQ2_XS, 2-bit) at 512K context, q4_0 KV, MTP draft 3. Better outside code. |
+| `start.sh` | The general model (IQ2_XS, 2-bit) at 512K context, q4_0 KV, MTP draft 3, refusals removed (`ABL=0` for the plain model). Better outside code. |
 | `bench.sh` | Repeats the workstation benchmark and prints this machine's numbers next to the workstation's. |
 | `configs/opencode/opencode.jsonc` | OpenCode pointed at the strata server, with both models. |
 
