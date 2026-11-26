@@ -36,10 +36,21 @@ One run benchmarks the one model at that endpoint. It times everything itself fr
 gets the same stopwatch, including engines that report no timings of their own (vLLM):
 
 - decode on 10 fixed prompts (code, prose, chat, a ~20K-token refactor), one warm-up pass and two measured;
-- prompt reading and decode on fresh 4K / 32K / 128K / 230K-token prompts (skipped past the server's max context);
+- prompt reading and decode on fresh 4K / 32K / 128K / 230K-token prompts, 3 runs each (skipped past the server's max context);
 - agent turns: a conversation that grows by a file part per turn and is resent each time, as coding agents do.
 
-It prints one JSON: `summary` with the medians, and every request with its token counts and timings.
+Every invocation sends exactly the same text, so two builds of one engine generate the same greedy answers and a speed
+difference is the engine's. With speculative decoding the decode speed depends on how many drafts the answer accepts, so a
+different question each run (the old random tags) swung the deep rows by +-20%. Each deep prompt still starts with its own
+tag (depth and run), so nothing in one server is served from a prefix cache.
+
+It prints one JSON: `summary` with the medians, `spread` with `[min, max]` for the same keys, and every request with its
+token counts, timings and `hash`, a short hash of the answer. Two runs of one engine, or two builds, gave identical
+outputs when the hashes match; compare speeds only then.
+
+```sh
+./bench.py --quick > quick.json             # the fixed prompts and 32K only, a few minutes, for A/B between two builds
+```
 
 ## OpenCode
 
